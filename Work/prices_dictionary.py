@@ -1,5 +1,6 @@
 import csv
 import sys
+from pprint import pprint
 
 def portfolio_cost(filename):
     total = 0
@@ -17,12 +18,26 @@ def portfolio_cost(filename):
             print("Input file is invalid")
     return total
 
+
+def read_prices(filename):
+    f = open(filename)
+    rows = csv.reader(f)
+    prices={}   # create empty dictionary
+    for row in rows:
+        try:
+            prices[row[0]] = row[1]  # read values from file and assign keys in dictionary
+        except IndexError:
+            print("Input file is invalid")
+
+    return prices
+
+
 if (len(sys.argv)) == 2:
     filename = sys.argv[1]  # read filename input from user
 else:
-    filename = 'Data/portfolio.csv' # default to this file if no input
+    filename = 'Data/prices.csv' # default to this file if no input
 
-total = portfolio_cost(filename)
-print('Total cost: ', total)
+portfolio = read_prices(filename)
+pprint(portfolio)
 
 
