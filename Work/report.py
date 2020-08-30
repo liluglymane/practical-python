@@ -82,5 +82,5 @@ for s in portfolio_old:   # portfolio list containing dictionary
     total_new += float(portfolio_new[s['name']]) * s['shares'] # find and calculate stock price of shares using names from original portfolio as index for dictionary containing new prices
 
 print('\nTotal value of old portfolio = ' + str(total))
-print('Total value of new portfolio= ' + str(total_new))
+print('Total value of new portfolio = ' + str(total_new))
 
