@@ -55,6 +55,17 @@ def read_prices(filename):
 
     return prices
 
+def print_report(portfolio_old, portfolio_new):
+    total = 0
+    total_new = 0
+    for s in portfolio_old:  # portfolio list containing dictionary
+        total += s['shares'] * s['price']
+        total_new += float(portfolio_new[s['name']]) * s['shares']  # find and calculate stock price of shares using names from original portfolio as index for dictionary containing new prices
+
+    print('\nTotal value of old portfolio = ' + str(total))
+    print('Total value of new portfolio = ' + str(total_new))
+
+
 if (len(sys.argv)) == 2:
     filename = sys.argv[1]  # read filename input from user
     filename2 = sys.argv[1]  # read filename input from user
@@ -64,9 +75,8 @@ else:
 
 portfolio_old = read_portfolio(filename)
 portfolio_new = read_prices(filename2)
+print_report(portfolio_old, portfolio_new)
 
-pprint(portfolio_old)   # old stock price values
-pprint(portfolio_new)   # new stock price values
 
 """
 total = 0
@@ -75,12 +85,4 @@ for name, shares, price in portfolio:   # portfolio list containing tuples is no
 print(total)
 """
 
-total = 0
-total_new=0
-for s in portfolio_old:   # portfolio list containing dictionary
-    total += s['shares'] * s['price']
-    total_new += float(portfolio_new[s['name']]) * s['shares'] # find and calculate stock price of shares using names from original portfolio as index for dictionary containing new prices
-
-print('\nTotal value of old portfolio = ' + str(total))
-print('Total value of new portfolio = ' + str(total_new))
 
