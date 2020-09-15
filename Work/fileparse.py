@@ -4,10 +4,14 @@ import csv
 # types=None allows to convert data types
 # has_headers=None specifies if file being parsed has headers
 # delimiter=None allows files to be parsed which have columns seperated in a different manner (comman, space etc)
-def parse_csv(filename, select=None, types=None, has_headers=True, delimiter=','):
+def parse_csv(filename, select=None, types=None, has_headers=True, delimiter=',', silence_errors=None):
     '''
     Parse a CSV file into a list of records
     '''
+
+    if select and not has_headers: # raise exception if select and has_headers=False is passed as both cannot be selected
+        raise RuntimeError('select requires column headers')
+
     with open(filename) as f:
         rows = csv.reader(f, delimiter=delimiter)  # read file headers
         headers = next(rows) if has_headers else [] # headers = column headings unless has_headers=false
@@ -31,7 +35,13 @@ def parse_csv(filename, select=None, types=None, has_headers=True, delimiter=','
 
             # convert values to the types given when function is called
             if types:
-                row = [func(val) for func, val in zip(types, row)]
+                try:
+                    row = [func(val) for func, val in zip(types, row)]
+                except ValueError as e: # if value could not be converted throws exception and prints it and continues code
+                    if not silence_errors: # if silence_errors=true then skip errors and continue
+                        print(f"Row {row}: Couldn't convert {row}")
+                        print(f"Row {row}: Reason {e}")
+                    continue
 
             # if headers are true then make dictionary otherwise make list of tuples instead
             if headers:
@@ -57,3 +67,12 @@ print(portfolio4)
 
 portfolio5 = parse_csv('Data/portfolio.dat', types=[str, int, float], delimiter=' ') # parse a file with space as the delimiter
 print(portfolio5)
+
+# portfolio6 = parse_csv('Data/missing.csv', types=[str, int, float]) # will throw a Runtime error as cannot have columns selected and has_headers=false
+# print(portfolio6)
+
+# portfolio6 = parse_csv('Data/missing.csv', types=[str, int, float])# will throw an exception as not all values could be converted
+# print(portfolio6)
+
+portfolio6 = parse_csv('Data/missing.csv', types=[str,int,float], silence_errors=True) # silence all exceptions/errors
+print(portfolio6)
