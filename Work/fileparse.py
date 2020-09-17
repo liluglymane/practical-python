@@ -53,6 +53,7 @@ def parse_csv(filename, select=None, types=None, has_headers=True, delimiter=','
 
     return records
 
+'''
 portfolio = parse_csv('Data/portfolio.csv', select=['name','price']) # select which columns to show
 print(portfolio)
 
@@ -68,11 +69,12 @@ print(portfolio4)
 portfolio5 = parse_csv('Data/portfolio.dat', types=[str, int, float], delimiter=' ') # parse a file with space as the delimiter
 print(portfolio5)
 
-# portfolio6 = parse_csv('Data/missing.csv', types=[str, int, float]) # will throw a Runtime error as cannot have columns selected and has_headers=false
-# print(portfolio6)
+portfolio6 = parse_csv('Data/missing.csv', types=[str, int, float]) # will throw a Runtime error as cannot have columns selected and has_headers=false
+print(portfolio6)
 
-# portfolio6 = parse_csv('Data/missing.csv', types=[str, int, float])# will throw an exception as not all values could be converted
-# print(portfolio6)
+portfolio6 = parse_csv('Data/missing.csv', types=[str, int, float])# will throw an exception as not all values could be converted
+print(portfolio6)
 
 portfolio6 = parse_csv('Data/missing.csv', types=[str,int,float], silence_errors=True) # silence all exceptions/errors
 print(portfolio6)
+'''
